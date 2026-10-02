@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+videos/
+data/dry_run/
+dashboard.html
+
+# Research data stays local (real bystanders: frames, transcripts, source links). Share via approved storage, not GitHub.
+data/
+_to_delete/
+.DS_Store
+*.pyc
