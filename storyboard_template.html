@@ -1,0 +1,155 @@
+<title>Robot Incident Storyboards</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: field-report pages, one storyboard per video; A is a film strip of real stills, B a row of reason cards, C four design-opportunity panels. */
+:root {
+  --bg: #f4f5f7; --surface: #ffffff; --ink: #161a21; --muted: #5b6270; --line: #dfe2e8;
+  --accent: #23408e; --accent-soft: #e6ebf7;
+  --trouble: #b3261e; --trouble-soft: #fbeae8;
+  --seen: #1f6b46; --seen-soft: #e2f2e9; --inf: #7a5a00; --inf-soft: #fbf1d4;
+  --comm: #2a5bd7; --comm-soft: #e8eefc; --nav: #157a63; --nav-soft: #e3f4ef;
+  --rec: #a65b00; --rec-soft: #fdf0e0; --env: #6b3fb5; --env-soft: #f0eafa; --aware: #0b7285; --aware-soft: #e3f4f7;
+  --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151b; --surface: #1b1f27; --ink: #e8eaf0; --muted: #9aa1ae; --line: #2c323d;
+  --accent: #9db4f5; --accent-soft: #222c45;
+  --trouble: #ff8a80; --trouble-soft: #3a1f1f;
+  --seen: #7fd3a8; --seen-soft: #1b3328; --inf: #e9c46a; --inf-soft: #352c14;
+  --comm: #8fb0ff; --comm-soft: #1f2840; --nav: #6fd6bd; --nav-soft: #17322c;
+  --rec: #f2b266; --rec-soft: #372a17; --env: #c3a6f5; --env-soft: #2a2140; --aware: #6fcfdf; --aware-soft: #15313a;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #12151b; --surface: #1b1f27; --ink: #e8eaf0; --muted: #9aa1ae; --line: #2c323d;
+  --accent: #9db4f5; --accent-soft: #222c45;
+  --trouble: #ff8a80; --trouble-soft: #3a1f1f;
+  --seen: #7fd3a8; --seen-soft: #1b3328; --inf: #e9c46a; --inf-soft: #352c14;
+  --comm: #8fb0ff; --comm-soft: #1f2840; --nav: #6fd6bd; --nav-soft: #17322c;
+  --rec: #f2b266; --rec-soft: #372a17; --env: #c3a6f5; --env-soft: #2a2140; --aware: #6fcfdf; --aware-soft: #15313a;
+  color-scheme: dark; }
+
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1480px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.mono { font-family: var(--mono); font-size: .85em; }
+.top h1 { font: 800 clamp(26px, 3.4vw, 38px)/1.1 var(--display); margin: 0 0 6px; letter-spacing: -.01em; text-wrap: balance; }
+.top p { margin: 0; color: var(--muted); max-width: 72ch; }
+
+.picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 8px; }
+.picker a { display: flex; gap: 8px; align-items: baseline; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); text-decoration: none; background: var(--surface); font-size: 13.5px; }
+.picker a .mono { color: var(--muted); }
+.picker a[aria-current="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.picker a[aria-current="true"] .mono { color: inherit; opacity: .8; }
+.picker a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.board { display: flex; flex-direction: column; gap: 34px; margin-top: 24px; }
+.bhead { display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+.eyebrow { margin: 0; color: var(--muted); font-size: 13px; letter-spacing: .02em; }
+.eyebrow a { color: var(--accent); }
+.bhead h2 { font: 700 clamp(22px, 2.6vw, 30px)/1.15 var(--display); margin: 0; text-wrap: balance; }
+.summary { margin: 4px 0 0; max-width: 80ch; font-size: 16px; }
+.meta { margin: 0; color: var(--muted); font-size: 13.5px; max-width: 90ch; }
+.meta b { color: var(--ink); font-weight: 600; margin-right: 6px; }
+
+h3 { display: flex; align-items: center; gap: 10px; font: 700 19px/1.2 var(--display); margin: 0 0 14px; }
+.sl { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; background: var(--ink); color: var(--bg); font-size: 15px; }
+.sub { margin: -6px 0 14px; color: var(--muted); font-size: 13.5px; }
+.n { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 50%; font: 700 12px/1 var(--display); flex: none; }
+
+/* A: film strip */
+.frames { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(max(190px, 18%), 1fr)); gap: 22px 14px; }
+.frame { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.fhead { display: flex; align-items: center; gap: 6px; }
+.frame .n { background: var(--accent); color: var(--bg); }
+.tc { font: 500 12.5px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.frame img { display: block; width: 100%; height: auto; border-radius: 4px; background: var(--line); }
+.frame.alert img { outline: 3px solid var(--trouble); outline-offset: -3px; }
+.cap { margin: 0; font-size: 13.5px; line-height: 1.45; }
+.lbl { display: block; font: 500 10.5px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; color: var(--muted); }
+.cap .lbl { color: var(--seen); }
+.speech { margin: 0; padding: 6px 8px; border-radius: 6px; background: var(--trouble-soft); font-size: 12.5px; line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
+.speech .lbl { color: var(--trouble); }
+.inferred { padding: 6px 8px; border-radius: 6px; background: var(--inf-soft); font-size: 12.5px; line-height: 1.4; }
+.inferred .lbl { color: var(--inf); }
+.inferred ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.inferred li { display: flex; flex-direction: column; gap: 1px; }
+.inferred .claim { color: var(--ink); }
+.inferred .why { color: var(--muted); }
+.inferred .why b { color: var(--inf); font-weight: 600; }
+.speech .es { font-style: italic; color: var(--trouble); }
+.speech .en { color: var(--ink); }
+
+/* B: reasons */
+.causes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.cause { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.chead { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; background: var(--trouble-soft); }
+.chead .n { background: var(--trouble); color: var(--bg); margin-top: 1px; }
+.chead h4 { margin: 0; font: 700 15px/1.3 var(--display); }
+.cause .ev { margin: 12px 14px 0; align-self: flex-start; }
+.cause p { margin: 8px 14px 14px; font-size: 14px; color: var(--ink); }
+.ev { display: inline-block; font: 500 11px/1 var(--mono); padding: 4px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: .04em; }
+.ev.seen { color: var(--seen); background: var(--seen-soft); }
+.ev.inf { color: var(--inf); background: var(--inf-soft); }
+
+/* C: opportunities */
+.opps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+.opp { border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.opp .cat { font: 500 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+.opp h4 { margin: 0; font: 700 16px/1.25 var(--display); }
+.opp ul { margin: 2px 0 0; padding-left: 18px; font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+.comm { background: var(--comm-soft); } .comm .cat { color: var(--comm); }
+.nav { background: var(--nav-soft); } .nav .cat { color: var(--nav); }
+.rec { background: var(--rec-soft); } .rec .cat { color: var(--rec); }
+.env { background: var(--env-soft); } .env .cat { color: var(--env); }
+.aware { background: var(--aware-soft); } .aware .cat { color: var(--aware); }
+
+.vlm { margin-top: 14px; background: var(--surface); border: 1px dashed var(--line); border-radius: 8px; padding: 14px 16px; font-size: 14px; }
+.vhead { margin: 0 0 8px; font: 500 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.eps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.ep { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ep + .ep { border-top: 1px solid var(--line); padding-top: 12px; }
+.ep p { margin: 0; max-width: 90ch; }
+.vrow { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.chip, .out { font: 500 12px/1 var(--mono); padding: 4px 7px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); }
+.out.fail { background: var(--trouble-soft); color: var(--trouble); }
+.out.pass { background: var(--seen-soft); color: var(--seen); }
+.out.partial, .out.unclear { background: var(--inf-soft); color: var(--inf); }
+.scen { color: var(--muted); font-size: 13px; min-width: 0; }
+.cf { font-style: italic; }
+.vnote { color: var(--muted); font-size: 13px; }
+.warn { margin: 4px 0 0; padding: 8px 10px; border-radius: 6px; background: var(--inf-soft); color: var(--inf); font-size: 13px; }
+.stamp { margin-top: 40px; color: var(--muted); font-size: 12.5px; }
+
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Robot incident storyboards</h1>
+    <p>What happened in each processed clip, possible reasons for the trouble, and what could help prevent it. Stills are real frames from the footage; timestamps are seconds into each clip.</p>
+  </header>
+  {{NAV}}
+  {{BOARDS}}
+  <p class="stamp">Generated by storyboard.py on {{UPDATED}}. Captions, reasons and ideas are drafts; stills are real frames.</p>
+</div>
+
+<script>
+(function () {
+  var boards = Array.prototype.slice.call(document.querySelectorAll('.board'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.picker a'));
+  if (boards.length < 2) return;
+  function show() {
+    var id = (location.hash || '').slice(1);
+    var target = boards.find(function (b) { return b.id === id; }) || boards[0];
+    boards.forEach(function (b) { b.hidden = b !== target; });
+    links.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + target.id ? 'true' : 'false'); });
+  }
+  window.addEventListener('hashchange', function () { show(); window.scrollTo(0, 0); });
+  show();
+})();
+</script>

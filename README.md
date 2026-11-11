@@ -14,6 +14,7 @@ it should have done instead.
 | 3a. Captions | `captions.py` | tesseract, opencv | burned-in text, `data/captions/` |
 | 3b. Transcribe | `transcribe.py` | faster-whisper | speech with reliability flags, `data/transcripts/` |
 | 4. Label | `label.py` | google-genai or anthropic, API key in `.env` | VLM draft labels, `data/labels_vlm.csv` |
+| 4b. Storyboard | `storyboard.py` | ffmpeg, same backend as Part 4 | per-video storyboard (A: real stills with captions and speech, B: possible reasons, C: design ideas), `data/storyboards/`, `storyboards.html` |
 | 5. Compare | `compare.py` (next) | your labels | VLM vs human agreement |
 
 Every script skips videos it has already processed; add `--force` to redo.
@@ -35,10 +36,17 @@ pip install pandas opencv-python faster-whisper google-genai anthropic yt-dlp
 cp .env.example .env        # then paste your API key into .env
 ```
 
+**Storyboards:** `python storyboard.py` drafts a storyboard for every labeled
+clip (the VLM picks the moments and writes captions, reasons and ideas; the
+script cuts the stills itself with ffmpeg, so every picture is a real frame) and
+writes `storyboards.html`. Edit `data/storyboards/<id>__<backend>.json` and run
+`python storyboard.py --render-only` to re-render. Hand-written storyboards
+(`__claude-session.json`) are always preferred and never overwritten.
+
 ## Files you edit
 
 - `schema.py`: scenarios (S1-S10), outcomes, failure types. The single source of truth.
-- `prompts/label_prompt.md`: the instructions the VLM gets. Every label records a
+- `prompts/label_prompt.md`: the instructions the VLM gets (`prompts/storyboard_prompt.md` for storyboards). Every label records a
   fingerprint of the prompt version, so edits stay traceable.
 - `labels/human_labels.csv`: your hand labels (copy `labels/human_labels_template.csv`).
   Label a clip BEFORE looking at the VLM's output for it, or its answer anchors yours.

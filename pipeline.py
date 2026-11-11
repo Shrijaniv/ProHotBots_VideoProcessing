@@ -3,7 +3,7 @@ Run the whole pipeline in batches and keep the dashboard current
 ================================================================
 One command instead of seven. For each batch it runs:
 
-  fetch -> ingest -> segment -> captions -> transcribe -> label -> dashboard
+  fetch -> ingest -> segment -> captions -> transcribe -> label -> storyboard -> dashboard
 
 Every step skips videos it has already done, so you can stop (Ctrl-C) and
 re-run any time; it picks up where it left off. The dashboard is refreshed
@@ -14,7 +14,8 @@ Usage (Mac Terminal, project folder, venv active):
   python pipeline.py --sheet "<google sheet link>" --batch 10            # one batch of 10
   python pipeline.py --sheet "<google sheet link>" --batch 10 --all      # keep going until done
   python pipeline.py                                                     # no new downloads; process what's here
-  python pipeline.py --no-label                                          # everything except the VLM step
+  python pipeline.py --no-label                                          # everything except the VLM steps
+  python pipeline.py --no-storyboard                                     # label, but skip storyboards
   python pipeline.py --backend claude                                    # label with Claude instead of Gemini
 
 Needs: ffmpeg + tesseract (brew install ffmpeg tesseract), and the Python
@@ -72,6 +73,10 @@ def check_tools(backend: str, labeling: bool) -> dict:
             blocked["label"] = f"{mod} not installed"
         elif key and not key_present(key):
             blocked["label"] = f"{key} missing from .env"
+        if "label" in blocked:
+            blocked["storyboard"] = blocked["label"]
+        elif not shutil.which("ffmpeg"):
+            blocked["storyboard"] = "ffmpeg not installed (brew install ffmpeg)"
     return blocked
 
 
@@ -108,6 +113,8 @@ def one_batch(a, blocked) -> int:
     run("transcribe", ["transcribe.py"], blocked, log)
     if not a.no_label:
         run("label", ["label.py", "--backend", a.backend], blocked, log)
+        if not a.no_storyboard:
+            run("storyboard", ["storyboard.py", "--backend", a.backend], blocked, log)
     subprocess.call([PY, "dashboard.py"], cwd=ROOT)
     print("\nBatch summary: " + ", ".join(f"{s} {st}" for s, st in log))
     return downloaded_count() - before
@@ -121,7 +128,8 @@ def main():
     ap.add_argument("--batch", type=int, default=10, help="videos to download per batch (default 10)")
     ap.add_argument("--all", action="store_true", help="repeat batches until no new videos download")
     ap.add_argument("--backend", default="gemini", choices=["gemini", "claude", "mock"])
-    ap.add_argument("--no-label", action="store_true", help="skip the VLM labeling step")
+    ap.add_argument("--no-label", action="store_true", help="skip the VLM steps (labels and storyboards)")
+    ap.add_argument("--no-storyboard", action="store_true", help="skip the storyboard step")
     ap.add_argument("--user-agent", default="", help='passed to fetch_videos.py (default "" = TikTok workaround)')
     a = ap.parse_args()
 
@@ -139,6 +147,8 @@ def main():
             break
         n += 1
     print("\nOpen dashboard.html in your browser (tick Auto-reload to watch it update).")
+    if not a.no_label and not a.no_storyboard:
+        print("Storyboards: open storyboards.html.")
 
 
 if __name__ == "__main__":
